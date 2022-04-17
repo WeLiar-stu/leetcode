@@ -28,6 +28,7 @@ class ListNode {
         }
     }
 }
+
 //Definition for a binary tree node.
 class TreeNode {
     int val;
@@ -63,13 +64,103 @@ public class Main {
         h.merge(nums1, 3, nums2, 3);
         System.out.println(Arrays.toString(nums1));
     }
+    //111
+    public int minDepth(TreeNode root) {
+        if(root==null){
+            return 0;
+        }else if(root.left==null) {
+            return 1+minDepth(root.right);
+        }else if(root.right==null) {
+            return 1 + minDepth(root.left);
+        }else{
+            return Math.min(minDepth(root.left),minDepth(root.right))+1;
+        }
+    }
+
+    //    104
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        } else {
+            return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+        }
+    }
+//    110
+
+    public boolean isBalanced(TreeNode root) {
+        if(isBalancedF(root)<0 ){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    public static int isBalancedF(TreeNode root){
+        if(root!=null){
+            int left=isBalancedF(root.left);
+            int right=isBalancedF((root.right));
+            if(left==-1 || right==-1||Math.abs(left-right)>1){
+                return -1;
+            }else{
+                return Math.max(left,right)+1;
+            }
+        }else{
+            return 0;
+        }
+    }
+    //    108
+    public TreeNode sortedArrayToBST(int[] nums) {
+
+        if(nums.length>0){
+            return sortedArrayToBSTF(nums,0,nums.length-1);
+        }else{
+            return null;
+        }
+    }
+    public TreeNode sortedArrayToBSTF(int[] nums, int start,int end){
+        if(start<=end){
+            int mid=start+(end-start)/2;
+            TreeNode t=new TreeNode(nums[mid]);
+            t.left=sortedArrayToBSTF(nums,start,mid-1);
+            t.right=sortedArrayToBSTF(nums,mid+1,end);
+            return t;
+        }else{
+            return null;
+        }
+
+
+    }
+
+//    101
+
+    public boolean isSymmetric(TreeNode root) {
+
+        if (root != null) {
+            return isSymmetricF(root.left, root.right);
+        }
+        return true;
+    }
+
+    public static boolean isSymmetricF(TreeNode left, TreeNode right) {
+        if (left == null && right == null) {
+            return true;
+        } else if (left != null && right != null) {
+            if (left.val == right.val) {
+                return isSymmetricF(left.left, right.right) && isSymmetricF(left.right, right.left);
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     // 100
     public boolean isSameTree(TreeNode p, TreeNode q) {
-        if(p!=null&& q!=null &&p.val==q.val){
-            return isSameTree(p.left,q.left) && isSameTree(p.right,q.right);
-        }else if(p==null && q==null){
+        if (p != null && q != null && p.val == q.val) {
+            return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+        } else if (p == null && q == null) {
             return true;
-        }else
+        } else
             return false;
     }
 
