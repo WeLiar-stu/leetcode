@@ -1,2 +1,2 @@
 # leetcode
-exercise the algo in leetcode
+algo in leetcode
