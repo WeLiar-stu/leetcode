@@ -1,75 +1,262 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Stack;
-
-
-//  Definition for singly-linked list.
-class ListNode {
-    int val;
-    ListNode next;
-
-    ListNode() {
-    }
-
-    ListNode(int val) {
-        this.val = val;
-    }
-
-    ListNode(int val, ListNode next) {
-        this.val = val;
-        this.next = next;
-    }
-
-    void showList() {
-        ListNode listNode1 = this;
-        while (listNode1 != null) {
-            System.out.print(listNode1.val + " ");
-            listNode1 = listNode1.next;
-        }
-    }
-}
-//Definition for a binary tree node.
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-
-    TreeNode() {
-    }
-
-    TreeNode(int val) {
-        this.val = val;
-    }
-
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
         Main h = new Main();
 
-        int[] nums1 = new int[]{1, 2, 3, 0, 0, 0};
-        int[] nums2 = new int[]{2, 5, 6};
+        int[] nums1 = new int[]{7, 6, 4, 3, 1};
+        int[] nums2 = new int[]{2,2,1};
 
         int target = 9;
         int x = 121;
-        String str = "Hello World";
+        String str = "A man, a plan, a canal: Panama";
         String str1 = "1111";
         String str2 = "1111";
-        h.merge(nums1, 3, nums2, 3);
-        System.out.println(Arrays.toString(nums1));
+
+        System.out.println(h.singleNumber(nums2));
     }
+    //145
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> list1=new ArrayList<>();
+        List<Integer> list2=new ArrayList<>();
+        Stack<TreeNode> stack1=new Stack<>();
+
+        if(root==null){
+            return list1;
+        }
+        stack1.add(root);
+        while(!stack1.isEmpty()){
+            TreeNode t=stack1.pop();
+            list1.add(t.val);
+            if(t.left!=null){
+                stack1.add(t.left);
+            }
+            if(t.right!=null){
+                stack1.add(t.right);
+            }
+        }
+        for (int i = list1.size()-1; i >=0 ; i--) {
+            list2.add(list1.get(i));
+        }
+        return list2;
+
+    }
+
+    //144
+    public List<Integer> preorderTraversal(TreeNode root){
+        List<Integer> list=new ArrayList<>();
+        Stack<TreeNode> stack=new Stack<>();
+        if(root==null){
+            return list;
+        }
+        stack.push(root);
+        TreeNode p=null;
+        while(!stack.isEmpty()){
+            p=stack.pop();
+            list.add(p.val);
+            if(p.right!=null){
+                stack.push(root.right);
+            }
+            if(p.left!=null){
+                stack.push(root.left);
+            }
+        }
+        return list;
+    }
+
+    //136
+    public int singleNumber(int[] nums) {
+        int sum=0;
+        for (int i = 0; i < nums.length; i++) {
+            sum^=nums[i];
+
+        }
+        return sum;
+    }
+
+    //    125
+    public boolean isPalindrome(String s) {
+        s = s.toLowerCase();
+        int i = 0, j = s.length() - 1;
+        while (i < j) {
+            while (i < j && !((s.charAt(i) <= 'z' && s.charAt(i) >= 'a') || (s.charAt(i) >= '0' && s.charAt(i) <= '9'))) {
+                i++;
+            }
+            while (i < j && !((s.charAt(j) <= 'z' && s.charAt(j) >= 'a') || (s.charAt(j) >= '0' && s.charAt(j) <= '9')))
+                j--;
+            if (s.charAt(i) == s.charAt(j)) {
+                i++;
+                j--;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+//    121
+
+    public int maxProfit(int[] prices) {
+        int min = prices[0];
+        int profit = 0;
+        for (int i = 1; i < prices.length; i++) {
+            min = Math.min(prices[i], min);
+            profit = Math.max(prices[i] - min, profit);
+        }
+        return profit;
+    }
+
+    //119
+    public List<Integer> getRow(int rowIndex) {
+        List<List<Integer>> nums = new ArrayList<>();
+        List<Integer> list = null;
+        for (int i = 0; i <= rowIndex; i++) {
+            list = new ArrayList<>();
+            for (int j = 0; j <= i; j++) {
+                if (j == 0 || j == i) {
+                    list.add(1);
+                } else
+
+                    list.add(nums.get(i - 1).get(j - 1) + nums.get(i - 1).get(j));
+            }
+            nums.add(list);
+
+        }
+        return list;
+    }
+
+    //    118
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> nums = new ArrayList<>();
+        for (int i = 0; i < numRows; i++) {
+            List<Integer> list = new ArrayList<>();
+            for (int j = 0; j <= i; j++) {
+                if (j == 0 || j == i) {
+                    list.add(1);
+                } else
+
+                    list.add(nums.get(i - 1).get(j - 1) + nums.get(i - 1).get(j));
+            }
+            nums.add(list);
+
+        }
+        return nums;
+
+    }
+
+    //    112
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (root != null) {
+            if (root.left == null && root.right == null && root.val == targetSum) {
+                return true;
+            } else {
+                return hasPathSum(root.left, targetSum - root.val)
+                        && hasPathSum(root.right, targetSum - root.val);
+            }
+        }
+        return false;
+
+    }
+
+    //111
+    public int minDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        } else if (root.left == null) {
+            return 1 + minDepth(root.right);
+        } else if (root.right == null) {
+            return 1 + minDepth(root.left);
+        } else {
+            return Math.min(minDepth(root.left), minDepth(root.right)) + 1;
+        }
+    }
+
+    //    104
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        } else {
+            return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+        }
+    }
+//    110
+
+    public boolean isBalanced(TreeNode root) {
+        if (isBalancedF(root) < 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static int isBalancedF(TreeNode root) {
+        if (root != null) {
+            int left = isBalancedF(root.left);
+            int right = isBalancedF((root.right));
+            if (left == -1 || right == -1 || Math.abs(left - right) > 1) {
+                return -1;
+            } else {
+                return Math.max(left, right) + 1;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    //    108
+    public TreeNode sortedArrayToBST(int[] nums) {
+
+        if (nums.length > 0) {
+            return sortedArrayToBSTF(nums, 0, nums.length - 1);
+        } else {
+            return null;
+        }
+    }
+
+    public TreeNode sortedArrayToBSTF(int[] nums, int start, int end) {
+        if (start <= end) {
+            int mid = start + (end - start) / 2;
+            TreeNode t = new TreeNode(nums[mid]);
+            t.left = sortedArrayToBSTF(nums, start, mid - 1);
+            t.right = sortedArrayToBSTF(nums, mid + 1, end);
+            return t;
+        } else {
+            return null;
+        }
+
+
+    }
+
+//    101
+
+    public boolean isSymmetric(TreeNode root) {
+
+        if (root != null) {
+            return isSymmetricF(root.left, root.right);
+        }
+        return true;
+    }
+
+    public static boolean isSymmetricF(TreeNode left, TreeNode right) {
+        if (left == null && right == null) {
+            return true;
+        } else if (left != null && right != null) {
+            if (left.val == right.val) {
+                return isSymmetricF(left.left, right.right) && isSymmetricF(left.right, right.left);
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     // 100
     public boolean isSameTree(TreeNode p, TreeNode q) {
-        if(p!=null&& q!=null &&p.val==q.val){
-            return isSameTree(p.left,q.left) && isSameTree(p.right,q.right);
-        }else if(p==null && q==null){
+        if (p != null && q != null && p.val == q.val) {
+            return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+        } else if (p == null && q == null) {
             return true;
-        }else
+        } else
             return false;
     }
 
